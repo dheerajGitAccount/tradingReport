@@ -15,7 +15,7 @@ a) Junit Testing incorported with 100% coverage via test cases (provided /src/te
 	
 b) Integration Testing is not applicable as there are no downstream systems present.
 
-c) TDD report has been attached as screenshot via jacoco plugin and jacoco-ut committed with result and coverage.
+c) "TDD Report Screenshot.PNG" file has been attached via jacoco plugin and jacoco-ut committed with result and coverage.
 
 d) Exception handling added.
 
