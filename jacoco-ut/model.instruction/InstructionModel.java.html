@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>InstructionModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Daily Reporting Engine Test Results</a> &gt; <a href="index.source.html" class="el_package">model.instruction</a> &gt; <span class="el_source">InstructionModel.java</span></div><h1>InstructionModel.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">package model.instruction;</span>
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Currency;
+/*
+ * Instruction model 
+ */
+<span class="fc" id="L9">public class InstructionModel implements Comparable&lt;InstructionModel&gt;{</span>
+
+	//Action
+<span class="fc" id="L12">	public enum Action{</span>
+<span class="fc" id="L13">		BUY(&quot;B&quot;),</span>
+<span class="fc" id="L14">		SELL(&quot;S&quot;);</span>
+		
+		private String actionValue;
+		
+<span class="fc" id="L18">		Action(String actionValue){</span>
+<span class="fc" id="L19">			this.actionValue=actionValue;</span>
+<span class="fc" id="L20">		}</span>
+		
+		public String getAction() {
+<span class="fc" id="L23">			return this.actionValue;</span>
+		}
+	}
+	
+	//Entity
+	private String entity;
+	
+	//settlementDate
+	private LocalDate settlementDate;
+	
+	//instructionDate
+	private LocalDate instructionDate;
+	
+	//Forex
+	private BigDecimal agreedForex;
+	
+	//tradeAction
+	private Action tradeAction;
+	
+	//Price per unit
+	private BigDecimal pricePerUnit;
+	
+	//Units
+	private BigDecimal units;
+	
+	//Currency
+	private Currency currency;
+
+	public String getEntity() {
+<span class="fc" id="L52">		return entity;</span>
+	}
+
+	public void setEntity(String entity) {
+<span class="fc" id="L56">		this.entity = entity;</span>
+<span class="fc" id="L57">	}</span>
+
+	public LocalDate getSettlementDate() {
+<span class="fc" id="L60">		return settlementDate;</span>
+	}
+
+	public void setSettlementDate(LocalDate settlementDate) {
+<span class="fc" id="L64">		this.settlementDate = settlementDate;</span>
+<span class="fc" id="L65">	}</span>
+
+	public LocalDate getInstructionDate() {
+<span class="fc" id="L68">		return instructionDate;</span>
+	}
+
+	public void setInstructionDate(LocalDate instructionDate) {
+<span class="fc" id="L72">		this.instructionDate = instructionDate;</span>
+<span class="fc" id="L73">	}</span>
+
+	public BigDecimal getAgreedForex() {
+<span class="fc" id="L76">		return agreedForex;</span>
+	}
+
+	public void setAgreedForex(BigDecimal agreedForex) {
+<span class="fc" id="L80">		this.agreedForex = agreedForex;</span>
+<span class="fc" id="L81">	}</span>
+
+	public Action getTradeAction() {
+<span class="fc" id="L84">		return tradeAction;</span>
+	}
+
+	public void setTradeAction(Action tradeAction) {
+<span class="fc" id="L88">		this.tradeAction = tradeAction;</span>
+<span class="fc" id="L89">	}</span>
+
+	public BigDecimal getPricePerUnit() {
+<span class="fc" id="L92">		return pricePerUnit;</span>
+	}
+
+	public void setPricePerUnit(BigDecimal pricePerUnit) {
+<span class="fc" id="L96">		this.pricePerUnit = pricePerUnit;</span>
+<span class="fc" id="L97">	}</span>
+
+	public BigDecimal getUnits() {
+<span class="fc" id="L100">		return units;</span>
+	}
+
+	public void setUnits(BigDecimal units) {
+<span class="fc" id="L104">		this.units = units;</span>
+<span class="fc" id="L105">	}</span>
+
+	public Currency getCurrency() {
+<span class="fc" id="L108">		return currency;</span>
+	}
+
+	public void setCurrency(Currency currency) {
+<span class="fc" id="L112">		this.currency = currency;</span>
+<span class="fc" id="L113">	}</span>
+	
+	public BigDecimal total() {
+<span class="fc" id="L116">		return this.pricePerUnit.multiply(this.agreedForex).multiply(this.units);</span>
+	}
+
+	
+	@Override
+	public int compareTo(InstructionModel o) {
+<span class="fc" id="L122">		return this.getSettlementDate().compareTo(o.getSettlementDate());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

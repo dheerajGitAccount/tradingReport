@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Daily Reporting Engine Test Results,default,DailyReportingEngine,3,72,0,0,1,18,1,1,1,1
+Daily Reporting Engine Test Results,business,GenerateReport,0,189,0,4,0,37,0,11,0,9
+Daily Reporting Engine Test Results,business,ReportEngine,0,242,0,14,0,56,0,19,0,12
+Daily Reporting Engine Test Results,utils,InputData,0,51,0,0,0,13,0,2,0,2
+Daily Reporting Engine Test Results,utils,DateCalculation,3,125,0,6,1,25,1,5,1,2
+Daily Reporting Engine Test Results,model.instruction,ReportingData,0,31,0,0,0,13,0,9,0,9
+Daily Reporting Engine Test Results,model.instruction,Rank,0,23,0,0,0,8,0,6,0,6
+Daily Reporting Engine Test Results,model.instruction,InstructionModel.Action,0,58,0,0,0,8,0,5,0,5
+Daily Reporting Engine Test Results,model.instruction,InstructionModel,0,74,0,0,0,27,0,19,0,19

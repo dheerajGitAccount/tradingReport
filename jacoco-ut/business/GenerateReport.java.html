@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GenerateReport.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Daily Reporting Engine Test Results</a> &gt; <a href="index.source.html" class="el_package">business</a> &gt; <span class="el_source">GenerateReport.java</span></div><h1>GenerateReport.java</h1><pre class="source lang-java linenums">package business;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import java.util.List;
+import java.util.Map;
+
+import model.instruction.Rank;
+import model.instruction.ReportingData;
+
+/*
+ * Following class will show the reports for Outgoing/Incoming Amounts and entity ranking
+ */
+<span class="fc" id="L15">public class GenerateReport {</span>
+ 
+	/**
+	 * Following method will generate outgoing USD Report
+	 * 
+	 * @param outgoingDataList
+	 */
+	public void totalOutgoingUSDReport(List&lt;ReportingData&gt; outgoingDataList) throws Exception {
+
+<span class="fc" id="L24">		System.out.println(&quot;Total Outgoing Amount Report&quot;);</span>
+<span class="fc" id="L25">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc" id="L26">		System.out.println(&quot;Date       ||     Amount(USD)&quot;);</span>
+<span class="fc" id="L27">		System.out.println(&quot;================================&quot;);</span>
+
+
+<span class="fc" id="L30">		outgoingDataList.forEach(outgoingData -&gt; System.out</span>
+<span class="fc" id="L31">				.println(outgoingData.getDate().format(DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy&quot;)) + &quot; ||       &quot;</span>
+<span class="fc" id="L32">						+ outgoingData.getTotalAmount()));</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * Following method will generate incoming USD Report
+	 * 
+	 * @param incomingDataList
+	 */
+	public void totalincomingUSDReport(List&lt;ReportingData&gt; incomingDataList) throws Exception{
+
+<span class="fc" id="L42">		System.out.println(&quot;Total Incoming Amount Report&quot;);</span>
+<span class="fc" id="L43">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc" id="L44">		System.out.println(&quot;Date       ||     Amount(USD)&quot;);</span>
+<span class="fc" id="L45">		System.out.println(&quot;================================&quot;);</span>
+
+<span class="fc" id="L47">		incomingDataList.forEach(incomingData -&gt; System.out</span>
+<span class="fc" id="L48">				.println(incomingData.getDate().format(DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy&quot;)) + &quot; ||       &quot;</span>
+<span class="fc" id="L49">						+ incomingData.getTotalAmount()));</span>
+<span class="fc" id="L50">	}</span>
+
+	/**
+	 * Following method will generate entity ranking for Outgoing
+	 * 
+	 * @param outgoingRankMap
+	 */
+	public void entityRankingReportForOutgoing(Map&lt;LocalDate, List&lt;Rank&gt;&gt; outgoingRankMap)throws Exception {
+
+<span class="fc" id="L59">		System.out.println(&quot;Ranking Report for Entity(Outgoing) &quot;);</span>
+
+<span class="fc" id="L61">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc" id="L62">		System.out.println(&quot;Date         ||     Entity&quot;);</span>
+<span class="fc" id="L63">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		for (Map.Entry&lt;LocalDate, List&lt;Rank&gt;&gt; rankEntry : outgoingRankMap.entrySet()) {</span>
+
+<span class="fc" id="L66">			Rank topRank = rankEntry.getValue().stream()</span>
+<span class="fc" id="L67">					.sorted((a, b) -&gt; b.getTotalAmount().compareTo(a.getTotalAmount())).findFirst().get();</span>
+<span class="fc" id="L68">			System.out.println(rankEntry.getKey().format(DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy&quot;)) + &quot;   ||     &quot;</span>
+<span class="fc" id="L69">					+ topRank.getEntity());</span>
+		}
+<span class="fc" id="L71">	}</span>
+
+	/**
+	 * Following method will generate entity ranking for incoming
+	 * 
+	 * @param incomingRankMap
+	 */
+	public void entityRankingReportForIncoming(Map&lt;LocalDate, List&lt;Rank&gt;&gt; incomingRankMap)throws Exception {
+
+<span class="fc" id="L80">		System.out.println(&quot;Ranking Report for Entity(Incoming) &quot;);</span>
+
+<span class="fc" id="L82">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc" id="L83">		System.out.println(&quot;Date         ||     Entity&quot;);</span>
+<span class="fc" id="L84">		System.out.println(&quot;================================&quot;);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		for (Map.Entry&lt;LocalDate, List&lt;Rank&gt;&gt; rankEntry : incomingRankMap.entrySet()) {</span>
+
+<span class="fc" id="L87">			Rank topRank = rankEntry.getValue().stream()</span>
+<span class="fc" id="L88">					.sorted((a, b) -&gt; b.getTotalAmount().compareTo(a.getTotalAmount())).findFirst().get();</span>
+<span class="fc" id="L89">			System.out.println(rankEntry.getKey().format(DateTimeFormatter.ofPattern(&quot;dd-MMM-yyyy&quot;)) + &quot;   ||     &quot;</span>
+<span class="fc" id="L90">					+ topRank.getEntity());</span>
+		}
+
+<span class="fc" id="L93">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

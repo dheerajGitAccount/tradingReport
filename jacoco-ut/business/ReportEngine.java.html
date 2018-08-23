@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ReportEngine.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Daily Reporting Engine Test Results</a> &gt; <a href="index.source.html" class="el_package">business</a> &gt; <span class="el_source">ReportEngine.java</span></div><h1>ReportEngine.java</h1><pre class="source lang-java linenums">package business;
+
+import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import model.instruction.InstructionModel;
+import model.instruction.Rank;
+import model.instruction.ReportingData;
+
+import utils.DateCalculation;
+
+/*
+ * Report Engine will process the data and prepare reporting data
+ */
+<span class="fc" id="L22">public class ReportEngine { </span>
+
+	/**
+	 * Performs logic to do date adjustment if required
+	 * 
+	 * @param instructionList
+	 * @return
+	 */
+	public List&lt;InstructionModel&gt; dateCalculation(List&lt;InstructionModel&gt; instructionList) throws Exception{
+
+<span class="fc" id="L32">		instructionList.forEach(instruction -&gt; {</span>
+<span class="fc" id="L33">			Map&lt;DayOfWeek, Boolean&gt; workingDaysMap = DateCalculation.workingDays(instruction.getCurrency());</span>
+<span class="fc" id="L34">			instruction.setInstructionDate(</span>
+<span class="fc" id="L35">					DateCalculation.setWorkingDay(instruction.getInstructionDate(), workingDaysMap));</span>
+<span class="fc" id="L36">			instruction</span>
+<span class="fc" id="L37">					.setSettlementDate(DateCalculation.setWorkingDay(instruction.getSettlementDate(), workingDaysMap));</span>
+<span class="fc" id="L38">		}); </span>
+
+<span class="fc" id="L40">		return instructionList;</span>
+	}
+
+	/**
+	 * Performs logic to prepare report for Outgoing/Incoming
+	 * 
+	 * @param instructionList
+	 * @param isBuy
+	 * @param isSell
+	 * @return
+	 */
+	public List&lt;ReportingData&gt; prepareReport(List&lt;InstructionModel&gt; instructionList, Boolean isBuy, Boolean isSell)throws Exception {
+<span class="fc" id="L52">		List&lt;InstructionModel&gt; tradingList = null;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		if (isBuy) {</span>
+<span class="fc" id="L54">			tradingList = instructionList.stream()</span>
+<span class="fc" id="L55">					.filter(filter -&gt; filter.getTradeAction().equals(InstructionModel.Action.BUY))</span>
+<span class="fc" id="L56">					.collect(Collectors.toList());</span>
+		}
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		if (isSell) {</span>
+<span class="fc" id="L59">			tradingList = instructionList.stream()</span>
+<span class="fc" id="L60">					.filter(filter -&gt; filter.getTradeAction().equals(InstructionModel.Action.SELL))</span>
+<span class="fc" id="L61">					.collect(Collectors.toList());</span>
+		}
+		// Group by Date
+<span class="fc" id="L64">		Map&lt;LocalDate, List&lt;InstructionModel&gt;&gt; workingDateMap = tradingList.stream()</span>
+<span class="fc" id="L65">				.collect(Collectors.groupingBy(d -&gt; d.getSettlementDate()));</span>
+
+	
+<span class="fc" id="L68">		List&lt;ReportingData&gt; reportingDataList = new ArrayList&lt;ReportingData&gt;();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		for (Map.Entry&lt;LocalDate, List&lt;InstructionModel&gt;&gt; entry : workingDateMap.entrySet()) {</span>
+
+<span class="fc" id="L71">			BigDecimal totalTradingAmount = entry.getValue().stream().map(InstructionModel::total)</span>
+<span class="fc" id="L72">					.reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+<span class="fc" id="L73">			ReportingData reportingData = new ReportingData();</span>
+<span class="fc" id="L74">			reportingData.setDate(entry.getKey());</span>
+<span class="fc" id="L75">			reportingData.setTotalAmount(totalTradingAmount);</span>
+<span class="fc" id="L76">			reportingData.setIsBuy(isBuy);</span>
+<span class="fc" id="L77">			reportingData.setIsSell(isSell);</span>
+<span class="fc" id="L78">			reportingDataList.add(reportingData);</span>
+		}
+
+<span class="fc" id="L81">		return reportingDataList;</span>
+	}
+
+	/**
+	 * Performs logic to prepare report for Outgoing/Incoming - Entity Ranking
+	 * 
+	 * @param instructionList
+	 * @param isBuy
+	 * @param isSell
+	 * @return
+	 */
+	public Map&lt;LocalDate, List&lt;Rank&gt;&gt; prepareRankingReport(List&lt;InstructionModel&gt; instructionList, boolean isBuy,
+			boolean isSell) throws Exception{
+
+<span class="fc" id="L95">		List&lt;InstructionModel&gt; tradingList = null;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (isBuy) {</span>
+<span class="fc" id="L97">			tradingList = instructionList.stream()</span>
+<span class="fc" id="L98">					.filter(filter -&gt; filter.getTradeAction().equals(InstructionModel.Action.BUY))</span>
+<span class="fc" id="L99">					.collect(Collectors.toList());</span>
+		}
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		if (isSell) {</span>
+<span class="fc" id="L102">			tradingList = instructionList.stream()</span>
+<span class="fc" id="L103">					.filter(filter -&gt; filter.getTradeAction().equals(InstructionModel.Action.SELL))</span>
+<span class="fc" id="L104">					.collect(Collectors.toList());</span>
+		}
+
+<span class="fc" id="L107">		Map&lt;LocalDate, List&lt;InstructionModel&gt;&gt; workingDateMap = tradingList.stream()</span>
+<span class="fc" id="L108">				.collect(Collectors.groupingBy(d -&gt; d.getSettlementDate()));</span>
+<span class="fc" id="L109">		Map&lt;LocalDate, List&lt;Rank&gt;&gt; entityRankingMap = new HashMap&lt;LocalDate, List&lt;Rank&gt;&gt;();</span>
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		for (Map.Entry&lt;LocalDate, List&lt;InstructionModel&gt;&gt; entry : workingDateMap.entrySet()) {</span>
+
+			// Fetch the unique entity list
+
+<span class="fc" id="L115">			Map&lt;String, List&lt;InstructionModel&gt;&gt; uniqueEntityMap = entry.getValue().stream()</span>
+<span class="fc" id="L116">					.collect(Collectors.groupingBy(d -&gt; d.getEntity()));</span>
+
+<span class="fc" id="L118">			List&lt;Rank&gt; entityRankingList = new ArrayList&lt;Rank&gt;();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">			for (Map.Entry&lt;String, List&lt;InstructionModel&gt;&gt; entityEntry : uniqueEntityMap.entrySet()) {</span>
+
+<span class="fc" id="L121">				BigDecimal totalAmount = entityEntry.getValue().stream().map(InstructionModel::total)</span>
+<span class="fc" id="L122">						.reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+<span class="fc" id="L123">				Rank rank = new Rank();</span>
+<span class="fc" id="L124">				rank.setEntity(entityEntry.getKey());</span>
+<span class="fc" id="L125">				rank.setTotalAmount(totalAmount);</span>
+<span class="fc" id="L126">				entityRankingList.add(rank);</span>
+
+			}
+
+<span class="fc" id="L130">			entityRankingMap.put(entry.getKey(), entityRankingList);</span>
+
+		}
+
+<span class="fc" id="L134">		return entityRankingMap;</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

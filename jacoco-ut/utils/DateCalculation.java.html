@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DateCalculation.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Daily Reporting Engine Test Results</a> &gt; <a href="index.source.html" class="el_package">utils</a> &gt; <span class="el_source">DateCalculation.java</span></div><h1>DateCalculation.java</h1><pre class="source lang-java linenums">package utils;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.Map;
+
+import constants.IConstants;
+
+/*
+ * Utility file to perform date adjustments
+ */
+<span class="nc" id="L14">public class DateCalculation {</span>
+ 
+	/**
+	 * 
+	 * @param currency
+	 * @return
+	 */
+	public static Map&lt;DayOfWeek, Boolean&gt; workingDays(Currency currency) {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">		if (IConstants.CURRENCY_AED.equalsIgnoreCase(currency.getCurrencyCode())</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">				|| IConstants.CURRENCY_SAR.equalsIgnoreCase(currency.getCurrencyCode())) {</span>
+			// return new RegionalWorkingDays();
+<span class="fc" id="L25">			Map&lt;DayOfWeek, Boolean&gt; workingDaysMap = new HashMap&lt;DayOfWeek, Boolean&gt;();</span>
+<span class="fc" id="L26">			workingDaysMap.put(DayOfWeek.MONDAY, true);</span>
+<span class="fc" id="L27">			workingDaysMap.put(DayOfWeek.TUESDAY, true);</span>
+<span class="fc" id="L28">			workingDaysMap.put(DayOfWeek.WEDNESDAY, true);</span>
+<span class="fc" id="L29">			workingDaysMap.put(DayOfWeek.THURSDAY, true);</span>
+<span class="fc" id="L30">			workingDaysMap.put(DayOfWeek.FRIDAY, false);</span>
+<span class="fc" id="L31">			workingDaysMap.put(DayOfWeek.SATURDAY, false);</span>
+<span class="fc" id="L32">			workingDaysMap.put(DayOfWeek.SUNDAY, true);</span>
+<span class="fc" id="L33">			return workingDaysMap;</span>
+		} else {
+<span class="fc" id="L35">			Map&lt;DayOfWeek, Boolean&gt; workingDaysMap = new HashMap&lt;DayOfWeek, Boolean&gt;();</span>
+<span class="fc" id="L36">			workingDaysMap.put(DayOfWeek.MONDAY, true);</span>
+<span class="fc" id="L37">			workingDaysMap.put(DayOfWeek.TUESDAY, true);</span>
+<span class="fc" id="L38">			workingDaysMap.put(DayOfWeek.WEDNESDAY, true);</span>
+<span class="fc" id="L39">			workingDaysMap.put(DayOfWeek.THURSDAY, true);</span>
+<span class="fc" id="L40">			workingDaysMap.put(DayOfWeek.FRIDAY, true);</span>
+<span class="fc" id="L41">			workingDaysMap.put(DayOfWeek.SATURDAY, false);</span>
+<span class="fc" id="L42">			workingDaysMap.put(DayOfWeek.SUNDAY, false);</span>
+<span class="fc" id="L43">			return workingDaysMap;</span>
+		}
+	}
+
+	/**
+	 * Validate the date as date should be on working day else change to next
+	 * working day
+	 * 
+	 * @param workingDate
+	 * @param workingWeekDays
+	 * @return
+	 */
+	public static LocalDate setWorkingDay(LocalDate workingDate, Map&lt;DayOfWeek, Boolean&gt; workingWeekDays) {
+<span class="fc" id="L56">		DayOfWeek inputDayOfWeek = workingDate.getDayOfWeek();</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (workingWeekDays.get(inputDayOfWeek)) {</span>
+<span class="fc" id="L58">			return workingDate;</span>
+		} else {
+<span class="fc" id="L60">			workingDate = workingDate.plusDays(1);</span>
+<span class="fc" id="L61">			return setWorkingDay(workingDate, workingWeekDays);</span>
+		}
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
