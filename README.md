@@ -9,7 +9,7 @@ c) Approach taken for program flow
 	
 d) No external libraries added.Its plain java code project.
 
-# commits dated 23/Aug/2018
+# committed - dated 23/Aug/2018
 
 a) Junit Testing incorported with 100% coverage via test cases (provided /src/test/<Test Files>)
 	
