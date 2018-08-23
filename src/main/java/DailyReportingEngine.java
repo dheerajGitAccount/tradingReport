@@ -13,10 +13,10 @@ import utils.InputData;
  * Daily Reporting Engine
  *
  */
-public class DailyReportingEngine {
-
-	public static void main(String[] args) {
-
+public class DailyReportingEngine { 
+ 
+	public static void main(String[] args) throws Exception{
+		
 		// Step 1 - create input data - in-memory
 		InputData seededData = new InputData();
 		List<InstructionModel> instructionList = seededData.createInputData();
@@ -48,6 +48,7 @@ public class DailyReportingEngine {
 
 		generateReport.entityRankingReportForIncoming(incomingRankMap);
 		System.out.println("================================== \n\n");
+		
 	}
 
 }

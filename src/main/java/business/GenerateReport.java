@@ -13,20 +13,20 @@ import model.instruction.ReportingData;
  * Following class will show the reports for Outgoing/Incoming Amounts and entity ranking
  */
 public class GenerateReport {
-
+ 
 	/**
 	 * Following method will generate outgoing USD Report
 	 * 
 	 * @param outgoingDataList
 	 */
-	public void totalOutgoingUSDReport(List<ReportingData> outgoingDataList) {
+	public void totalOutgoingUSDReport(List<ReportingData> outgoingDataList) throws Exception {
 
 		System.out.println("Total Outgoing Amount Report");
 		System.out.println("================================");
 		System.out.println("Date       ||     Amount(USD)");
 		System.out.println("================================");
 
-		// Add the total Outgoing Amount
+
 		outgoingDataList.forEach(outgoingData -> System.out
 				.println(outgoingData.getDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + " ||       "
 						+ outgoingData.getTotalAmount()));
@@ -37,14 +37,13 @@ public class GenerateReport {
 	 * 
 	 * @param incomingDataList
 	 */
-	public void totalincomingUSDReport(List<ReportingData> incomingDataList) {
+	public void totalincomingUSDReport(List<ReportingData> incomingDataList) throws Exception{
 
 		System.out.println("Total Incoming Amount Report");
 		System.out.println("================================");
 		System.out.println("Date       ||     Amount(USD)");
 		System.out.println("================================");
 
-		// Add the total Outgoing Amount
 		incomingDataList.forEach(incomingData -> System.out
 				.println(incomingData.getDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + " ||       "
 						+ incomingData.getTotalAmount()));
@@ -55,7 +54,7 @@ public class GenerateReport {
 	 * 
 	 * @param outgoingRankMap
 	 */
-	public void entityRankingReportForOutgoing(Map<LocalDate, List<Rank>> outgoingRankMap) {
+	public void entityRankingReportForOutgoing(Map<LocalDate, List<Rank>> outgoingRankMap)throws Exception {
 
 		System.out.println("Ranking Report for Entity(Outgoing) ");
 
@@ -76,7 +75,7 @@ public class GenerateReport {
 	 * 
 	 * @param incomingRankMap
 	 */
-	public void entityRankingReportForIncoming(Map<LocalDate, List<Rank>> incomingRankMap) {
+	public void entityRankingReportForIncoming(Map<LocalDate, List<Rank>> incomingRankMap)throws Exception {
 
 		System.out.println("Ranking Report for Entity(Incoming) ");
 

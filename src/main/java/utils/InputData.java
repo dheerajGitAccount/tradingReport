@@ -18,7 +18,7 @@ public class InputData {
 	 */
 	public List<InstructionModel> createInputData() {
 
-		InstructionModel instructionModelFoo = new InstructionModel();
+		/*InstructionModel instructionModelFoo = new InstructionModel();
 		instructionModelFoo.setEntity("foo");
 		instructionModelFoo.setCurrency(Currency.getInstance("USD"));
 		instructionModelFoo.setInstructionDate(LocalDate.of(2016, 01, 10));
@@ -26,7 +26,7 @@ public class InputData {
 		instructionModelFoo.setAgreedForex(BigDecimal.valueOf(.50));
 		instructionModelFoo.setTradeAction(Action.BUY);
 		instructionModelFoo.setPricePerUnit(BigDecimal.valueOf(100.50));
-		instructionModelFoo.setUnits(BigDecimal.valueOf(100));
+		instructionModelFoo.setUnits(BigDecimal.valueOf(100));*/
 
 		InstructionModel instructionModelBar = new InstructionModel();
 		instructionModelBar.setEntity("bar");
@@ -40,7 +40,7 @@ public class InputData {
 
 		List<InstructionModel> instructionList = new ArrayList<InstructionModel>();
 
-		instructionList.add(instructionModelFoo);
+		//instructionList.add(instructionModelFoo);
 		instructionList.add(instructionModelBar);
 		return instructionList;
 	}

@@ -19,7 +19,7 @@ import utils.DateCalculation;
 /*
  * Report Engine will process the data and prepare reporting data
  */
-public class ReportEngine {
+public class ReportEngine { 
 
 	/**
 	 * Performs logic to do date adjustment if required
@@ -27,7 +27,7 @@ public class ReportEngine {
 	 * @param instructionList
 	 * @return
 	 */
-	public List<InstructionModel> dateCalculation(List<InstructionModel> instructionList) {
+	public List<InstructionModel> dateCalculation(List<InstructionModel> instructionList) throws Exception{
 
 		instructionList.forEach(instruction -> {
 			Map<DayOfWeek, Boolean> workingDaysMap = DateCalculation.workingDays(instruction.getCurrency());
@@ -35,7 +35,7 @@ public class ReportEngine {
 					DateCalculation.setWorkingDay(instruction.getInstructionDate(), workingDaysMap));
 			instruction
 					.setSettlementDate(DateCalculation.setWorkingDay(instruction.getSettlementDate(), workingDaysMap));
-		});
+		}); 
 
 		return instructionList;
 	}
@@ -48,7 +48,7 @@ public class ReportEngine {
 	 * @param isSell
 	 * @return
 	 */
-	public List<ReportingData> prepareReport(List<InstructionModel> instructionList, Boolean isBuy, Boolean isSell) {
+	public List<ReportingData> prepareReport(List<InstructionModel> instructionList, Boolean isBuy, Boolean isSell)throws Exception {
 		List<InstructionModel> tradingList = null;
 		if (isBuy) {
 			tradingList = instructionList.stream()
@@ -64,7 +64,7 @@ public class ReportEngine {
 		Map<LocalDate, List<InstructionModel>> workingDateMap = tradingList.stream()
 				.collect(Collectors.groupingBy(d -> d.getSettlementDate()));
 
-		// Add the total Outgoing Amount
+	
 		List<ReportingData> reportingDataList = new ArrayList<ReportingData>();
 		for (Map.Entry<LocalDate, List<InstructionModel>> entry : workingDateMap.entrySet()) {
 
@@ -90,7 +90,7 @@ public class ReportEngine {
 	 * @return
 	 */
 	public Map<LocalDate, List<Rank>> prepareRankingReport(List<InstructionModel> instructionList, boolean isBuy,
-			boolean isSell) {
+			boolean isSell) throws Exception{
 
 		List<InstructionModel> tradingList = null;
 		if (isBuy) {
